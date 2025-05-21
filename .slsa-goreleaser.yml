@@ -11,10 +11,9 @@ env:
 
 builds:
   - id: hello
-    main: .main.go   
-    binary: hello               
+    binary: binary-{{ .Os }}-{{ .Arch }}
+    main: .main.go                  
     goos:
       - linux
     goarch:
       - amd64   
-    binary: binary-{{ .Os }}-{{ .Arch }}
