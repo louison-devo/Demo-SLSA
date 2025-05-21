@@ -8,11 +8,6 @@ on:
 permissions: read-all
 
 jobs:
-  # Generate ldflags dynamically.
-  # Optional: only needed for ldflags.
- 
-
-  # Trusted builder.
   build:
     permissions:
       id-token: write # To sign the provenance.
