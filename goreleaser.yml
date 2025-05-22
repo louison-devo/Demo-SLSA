@@ -14,7 +14,7 @@ kos:
     tags:
       - "{{.Tag}}"
       - "{{ if not .Prerelease }}latest{{ end }}"
-    main: .main.go
+    main: .
     bare: true
     preserve_import_paths: false
     sbom: cyclonedx
