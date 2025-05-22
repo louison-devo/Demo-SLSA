@@ -6,7 +6,7 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "<html><body><h1>SLSA Demo</h1></body></html>")
+	fmt.Fprintln(w, "<html><body><h1>SLSA Demo, DevoHack{1L0v3_S3cD3v0ps}</h1></body></html>")
 }
 
 func main() {
