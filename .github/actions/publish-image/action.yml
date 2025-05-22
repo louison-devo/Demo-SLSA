@@ -46,6 +46,9 @@ runs:
     # Install ko to publish container images
     - name: Set up Ko
       uses: ko-build/setup-ko@v0.6
+    # Install cosign to sign artfacts with goreleaser 
+    - name: Install Cosign
+      uses: sigstore/cosign-installer@v3.5.0
     # Run command goreleaser release based on .goreleaser.yml
     # LDFLAGS are passed thanks to the steps.job_id.outputs.variable_name variable
     - name: Run GoReleaser
@@ -71,3 +74,12 @@ runs:
           digest=$(echo "${image_and_digest}" | cut -d'@' -f2)
           echo "name=$image" >> "$GITHUB_OUTPUT"
           echo "digest=$digest" >> "$GITHUB_OUTPUT"
+     # Sign image with cosign sign command
+    - shell: bash
+      name: Generate Image Signature
+      env:
+        #COSIGN_REPOSITORY: ghcr.io/${{github.owner}}/signatures # need to use this variable for having a dfiferent signature repository 
+        IMAGE: ${{ steps.image.outputs.name }}@${{ steps.image.outputs.digest }}
+      run : |
+        cosign sign --yes \
+        ${{ env.IMAGE }}
