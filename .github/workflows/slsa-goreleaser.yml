@@ -5,10 +5,11 @@ on:
     tags:
       - "*"
 
-permissions: read-all
+
 
 jobs:
   build-image:
+     permissions: write-all
      runs-on: ubuntu-latest
      outputs:
       hashes: ${{ steps.publish-artifacts.outputs.hashes }}
