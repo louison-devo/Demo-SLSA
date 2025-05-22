@@ -9,11 +9,16 @@ env:
   - GO111MODULE=on
   - CGO_ENABLED=0
 
-builds:
-  - id: hello
-    binary: binary-{{ .Os }}-{{ .Arch }}
-    main: .main.go                  
-    goos:
-      - linux
-    goarch:
-      - amd64   
+kos:
+  - repository: ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/Demo-SLSA
+    tags:
+      - "{{.Tag}}"
+      - "{{ if not .Prerelease }}latest{{ end }}"
+    main: .main.go
+    bare: true
+    preserve_import_paths: false
+    sbom: cyclonedx
+    platforms:
+      - linux/amd64
+    flags:
+      - -trimpath

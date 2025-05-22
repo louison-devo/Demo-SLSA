@@ -8,11 +8,24 @@ on:
 permissions: read-all
 
 jobs:
-  build:
-    permissions:
-      id-token: write # To sign the provenance.
-      contents: write # To upload assets to release.
-      actions: read # To read the workflow path.
-    uses: slsa-framework/slsa-github-generator/.github/workflows/builder_go_slsa3.yml@v2.1.0
-    with:
-      go-version: 1.17
+  build-image:
+     runs-on: ubuntu-latest
+     outputs:
+      hashes: ${{ steps.publish-artifacts.outputs.hashes }}
+      image: ${{ steps.publish-artifacts.outputs.name }}
+      digest: ${{ steps.publish-artifacts.outputs.digest }}
+     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+              fetch-depth: 0      
+      - name: Publish Artifacts
+        id : publish-artifacts
+        uses: ./.github/actions/publish-image
+        with:
+          go-version: 1.21.6
+          github_token : ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
+
