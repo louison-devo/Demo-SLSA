@@ -54,7 +54,7 @@ runs:
       with:
         distribution: goreleaser 
         version: latest
-        args: release 
+        args: release --config=goreleaser.yml
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
     # Get artifacts from the goreleaser's step outputs to retrieve Docker Manifest containing the image and its digest

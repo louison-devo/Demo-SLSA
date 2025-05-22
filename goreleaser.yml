@@ -1,0 +1,24 @@
+# Version for this file.
+version: 1
+
+before:
+  hooks:
+    - go mod tidy
+    - go mod download
+env:
+  - GO111MODULE=on
+  - CGO_ENABLED=0
+
+kos:
+  - repository: ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/Demo-SLSA
+    tags:
+      - "{{.Tag}}"
+      - "{{ if not .Prerelease }}latest{{ end }}"
+    main: .main.go
+    bare: true
+    preserve_import_paths: false
+    sbom: cyclonedx
+    platforms:
+      - linux/amd64
+    flags:
+      - -trimpath
