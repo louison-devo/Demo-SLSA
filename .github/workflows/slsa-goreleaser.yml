@@ -31,20 +31,20 @@ jobs:
           registry_password: ${{ secrets.GITHUB_TOKEN }}
 # Job generating provenance for container images requiring an image and an image digest
   image-provenance:
-      needs: [goreleaser]
+      needs: [build-image]
       permissions:
         actions: read
         id-token: write
         packages: write
       uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.10.0
       with:
-        image: ${{ needs.goreleaser.outputs.image }}
-        digest: ${{ needs.goreleaser.outputs.digest }}
+        image: ${{ needs.build-image.outputs.image }}
+        digest: ${{ needs.build-image.outputs.digest }}
         registry-username: ${{ github.actor }}
       secrets:
         registry-password: ${{ secrets.GITHUB_TOKEN }} 
   verify-provenance:
-      needs: [goreleaser,image-provenance]
+      needs: [build-image,image-provenance]
       runs-on: ubuntu-latest
       env: 
          WORKSPACE: ${{github.workspace}}
@@ -63,5 +63,5 @@ jobs:
             with:
               go-version: 1.21.6
               github_token : ${{ secrets.GITHUB_TOKEN }}
-              image: ${{needs.goreleaser.outputs.image}}@${{needs.goreleaser.outputs.digest}}
+              image: ${{needs.build-image.outputs.image}}@${{needs.build-image.outputs.digest}}
  
