@@ -10,7 +10,7 @@ env:
   - CGO_ENABLED=0
 
 kos:
-  - repository: ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/Demo-SLSA
+  - repository: ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/demo-slsa
     tags:
       - "{{.Tag}}"
       - "{{ if not .Prerelease }}latest{{ end }}"
